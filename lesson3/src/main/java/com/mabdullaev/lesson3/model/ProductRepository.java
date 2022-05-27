@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 import java.util.TreeMap;
 
 @Getter
@@ -21,7 +22,7 @@ public class ProductRepository {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         productList = new TreeMap<>();
 
         productList.put(1, new Product(1, "Apple", 1));
@@ -40,8 +41,22 @@ public class ProductRepository {
         return productList.get(id);
     }
 
-    public void addProduct(Product product){
+    public void addProduct(Product product) {
         productList.put(product.getId(), product);
+    }
+
+    public void inc(int id) {
+        Product product = getProductList().get(id);
+        if (product != null) {
+            product.setPrice(product.getPrice() + 1);
+        }
+    }
+
+    public void dec(int id) {
+        Product product = getProductList().get(id);
+        if (product != null && product.getPrice() > 0) {
+            product.setPrice(product.getPrice() - 1);
+        }
     }
 
 }

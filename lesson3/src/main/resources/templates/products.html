@@ -10,24 +10,31 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<div name="container">
+<div class="container">
 <table class="table">
     <thead>
     <tr>
         <td>ID</td>
         <td>NAME</td>
-        <td>PRICE</td>
         <td></td>
+        <td>PRICE</td>
+        <td/>
     </tr>
     </thead>
     <tr th:each="p: ${products.values()}">
         <td th:text="${p.id}" />
         <td th:text="${p.name}" />
+        <td>
+            <a th:href="@{'/api/products/dec?id='+${p.id}}" class="btn btn-primary">-</a>
+        </td>
         <td th:text="${p.price}" />
+        <td>
+            <a th:href="@{'/api/products/inc?id='+${p.id}}" class="btn btn-primary">+</a>
+        </td>
     </tr>
 </table>
 
-<form method="post" th:action="@{'/api/products/add'}">
+<form method="post" th:action="@{'/add'}">
     <div class="mb-3 row">
         <label for="productId" class="col-sm-2 col-form-label">Id</label>
         <div class="col-sm-10">
