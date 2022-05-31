@@ -2,10 +2,8 @@ package com.mabdullaev.lesson3.controllers;
 
 import com.mabdullaev.lesson3.model.Product;
 import com.mabdullaev.lesson3.model.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -30,4 +28,15 @@ public class MainController {
         return "redirect:";
     }
 
+    @GetMapping("/inc")
+    public String inc(@RequestParam int id){
+        repository.inc(id);
+        return "redirect:";
+    }
+
+    @GetMapping("/dec")
+    public String dec(@RequestParam int id){
+        repository.dec(id);
+        return "redirect:";
+    }
 }
