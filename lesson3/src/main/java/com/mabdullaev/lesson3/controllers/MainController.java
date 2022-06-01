@@ -1,7 +1,7 @@
 package com.mabdullaev.lesson3.controllers;
 
-import com.mabdullaev.lesson3.model.Product;
-import com.mabdullaev.lesson3.model.ProductRepository;
+import com.mabdullaev.lesson3.model.dto.ProductDto;
+import com.mabdullaev.lesson3.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,33 +10,51 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/products")
 public class MainController {
 
-    private final ProductRepository repository;
+    private final ProductService productService;
 
-    public MainController(ProductRepository repository) {
-        this.repository = repository;
+    public MainController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping
     public String showProducts(Model model){
-        model.addAttribute("products", repository.getProductList());
+        model.addAttribute("products", productService.findAll());
         return "products";
     }
 
+    @GetMapping("/add")
+    public String showAddProduct(){
+        return "add";
+    }
+
     @PostMapping("/add")
-    public String addProduct(@RequestParam int id, @RequestParam String name,@RequestParam int price){
-        repository.addProduct(new Product(id,name,price));
+    public String addProduct(@RequestParam String name,@RequestParam int price){
+        productService.addProduct(new ProductDto(null, name,price));
         return "redirect:";
     }
 
     @GetMapping("/inc")
-    public String inc(@RequestParam int id){
-        repository.inc(id);
+    public String inc(@RequestParam Long id){
+        productService.inc(id);
         return "redirect:";
     }
 
     @GetMapping("/dec")
-    public String dec(@RequestParam int id){
-        repository.dec(id);
+    public String dec(@RequestParam Long id){
+        productService.dec(id);
         return "redirect:";
     }
+
+    @GetMapping(value = "/info/{id}")
+    public String showProductPageById(Model model, @PathVariable Long id){
+        model.addAttribute("product", productService.findById(id));
+        return "info";
+    }
+
+    @PostMapping("/del/{id}")
+    public String addProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
+        return "redirect:/api/products";
+    }
+
 }
