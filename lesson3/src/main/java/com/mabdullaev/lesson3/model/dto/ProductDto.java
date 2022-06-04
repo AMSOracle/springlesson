@@ -1,4 +1,4 @@
-package com.mabdullaev.lesson3.model;
+package com.mabdullaev.lesson3.model.dto;
 
 
 import lombok.*;
@@ -8,8 +8,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Product {
-    private int id;
+public class ProductDto {
+
+    private Long id;
+
     private String name;
+
     private int price;
 }
