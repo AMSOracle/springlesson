@@ -21,6 +21,7 @@
         <td/>
         <td/>
         <td/>
+        <td/>
     </tr>
     </thead>
     <tr th:each="p: ${products}">
@@ -38,6 +39,9 @@
 
             <button type="submit" class="btn btn-primary">X</button>
             </form>
+        </td>
+        <td>
+            <a th:href="@{'/api/products/client/'+${p.id}}" class="btn btn-primary">Clients</a>
         </td>
     </tr>
 </table>

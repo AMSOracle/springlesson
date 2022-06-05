@@ -5,9 +5,9 @@ import com.mabdullaev.lesson3.model.dao.Product;
 import java.util.List;
 
 public interface ProductDao {
-    public Product findById(Long id);
-    public List<Product> findAll();
-    public void deleteById(Long id);
-    public void saveOrUpdate(Product product);
-
+    Product findById(Long id);
+    List<Product> findAll();
+    void deleteById(Long id);
+    void saveOrUpdate(Product product);
+    List<Product> getProductsByClient(long clientId);
 }
