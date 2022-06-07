@@ -32,5 +32,8 @@
 <!--        Полная очистка схемы и создание ее по разметке Hibernate. После закрытия Factory выполняется DROP -->
 
         <mapping class="com.mabdullaev.lesson3.model.dao.Product"/>
+        <mapping class="com.mabdullaev.lesson3.model.dao.Client"/>
+        <mapping class="com.mabdullaev.lesson3.model.dao.Order"/>
+        <mapping class="com.mabdullaev.lesson3.model.dao.OrderItem"/>
     </session-factory>
 </hibernate-configuration>
