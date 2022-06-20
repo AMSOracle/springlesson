@@ -1,10 +1,13 @@
 package com.mabdullaev.lesson7.services;
 
+import com.mabdullaev.lesson7.exceptions.ResourceNotFoundException;
 import com.mabdullaev.lesson7.model.dao.Product;
 import com.mabdullaev.lesson7.model.dto.ProductDto;
 import com.mabdullaev.lesson7.repositories.ProductRepository;
 import com.mabdullaev.lesson7.utils.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,32 +19,29 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final Mapper mapper;
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public Page<ProductDto> findAll(int pageIndex, int pageSize){
+        return productRepository.findAll(PageRequest.of(pageIndex,pageSize)).map(mapper::daoToDto);
+    }
+    public ProductDto findById(Long id) {
+        return mapper.daoToDto(productRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Product with id=" + id + " not found")));
     }
 
-    public Product findById(Long id){
-        return productRepository.findById(id).orElse(new Product());
-    }
-
-    public void save(ProductDto productDto){
+    public ProductDto create(ProductDto productDto) {
         Product product = mapper.dtoToDao(productDto);
-        productRepository.save(product);
+        //clear ID as it's set by Database
+        product.setId(null);
+        return mapper.daoToDto(productRepository.save(product));
     }
 
-    public void deleteById(Long id){
+    public ProductDto upd(ProductDto productDto){
+        //check if product exists
+        findById(productDto.getId());
+        Product product = mapper.dtoToDao(productDto);
+        return mapper.daoToDto(productRepository.save(product));
+    }
+
+    public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 
-    public List<Product> filterByPrice(Integer min, Integer max){
-        if ((min == null) && (max != null)){
-            return productRepository.findAllByPriceBefore(max);
-        }else if(min != null && max == null){
-            return productRepository.findAllByPriceAfter(min);
-        }else if(min!= null && max != null){
-            return productRepository.findAllByPriceBetween(min, max);
-        } else{
-            return findAll();
-        }
-    }
 }
