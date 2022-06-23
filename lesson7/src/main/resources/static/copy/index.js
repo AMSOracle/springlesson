@@ -1,5 +1,5 @@
 angular.module('market-front', []).controller('appController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8189/market/api/v1';
+    const contextPath = 'http://localhost:8080/market/api';
 
     let currentPageIndex = 1;
 
@@ -20,7 +20,7 @@ angular.module('market-front', []).controller('appController', function ($scope,
 
 
     $scope.showInfo = function (product) {
-        alert(product.title);
+        alert(product.name);
     }
 
     $scope.createNewProduct = function () {
@@ -34,6 +34,28 @@ angular.module('market-front', []).controller('appController', function ($scope,
             );
     }
 
+    $scope.prepareForUpdate = function(id){
+        $http({
+            url: contextPath + '/products/'+id,
+            method: 'GET'
+        }).then(function (response) {
+            $scope.upd_product = response.data;
+        });
+    }
+
+    $scope.updateProduct = function () {
+        $http({
+            url: contextPath + '/products',
+            method: 'PUT',
+            data: $scope.upd_product
+        }).then(function successCallback (response) {
+            $scope.loadProducts(currentPageIndex);
+            $scope.upd_product = null;
+        }, function failCallback (response) {
+            alert(response.data.message);
+        });
+
+    }
     $scope.generatePagesIndexes = function (startPage, endPage) {
         let arr = [];
         for (let i = startPage; i < endPage + 1; i++) {

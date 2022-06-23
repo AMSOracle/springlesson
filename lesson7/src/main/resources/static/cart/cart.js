@@ -1,12 +1,12 @@
-angular.module('market-front', []).controller('appController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8189/market/api/v1';
+angular.module('market-front').controller('cartController', function ($scope, $http) {
+    const contextPath = 'http://localhost:8080/market/api';
 
     let currentPageIndex = 1;
 
     $scope.loadProducts = function (pageIndex = 1) {
         currentPageIndex = pageIndex;
         $http({
-            url: contextPath + '/products',
+            url: contextPath + '/cart',
             method: 'GET',
             params: {
                 p: pageIndex
@@ -16,22 +16,6 @@ angular.module('market-front', []).controller('appController', function ($scope,
             $scope.productsPage = response.data;
             $scope.paginationArray = $scope.generatePagesIndexes(1, $scope.productsPage.totalPages);
         });
-    }
-
-
-    $scope.showInfo = function (product) {
-        alert(product.title);
-    }
-
-    $scope.createNewProduct = function () {
-        $http.post(contextPath + '/products', $scope.new_product)
-            .then(function successCallback(response) {
-                    $scope.loadProducts(currentPageIndex);
-                    $scope.new_product = null;
-                }, function failCallback(response) {
-                    alert(response.data.message);
-                }
-            );
     }
 
     $scope.generatePagesIndexes = function (startPage, endPage) {
@@ -60,10 +44,31 @@ angular.module('market-front', []).controller('appController', function ($scope,
 
     $scope.deleteProduct = function(id){
         $http({
-            url: contextPath + '/products/'+id,
+            url: contextPath + '/cart/'+id,
             method: 'DELETE'
         }).then(function successCallback (response) {
             console.log(response);
+            $scope.loadProducts(currentPageIndex);
+        }, function failCallback (response) {
+            alert(response.data.message);
+        });
+    }
+
+    $scope.inc = function(id){
+        $http({
+            url: contextPath + '/cart/inc?id='+id,
+            method: 'PUT'
+        }).then(function successCallback (response) {
+            $scope.loadProducts(currentPageIndex);
+        }, function failCallback (response) {
+            alert(response.data.message);
+        });
+    }
+    $scope.dec = function(id){
+        $http({
+            url: contextPath + '/cart/dec?id='+id,
+            method: 'PUT'
+        }).then(function successCallback (response) {
             $scope.loadProducts(currentPageIndex);
         }, function failCallback (response) {
             alert(response.data.message);

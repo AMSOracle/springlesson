@@ -1,5 +1,5 @@
-angular.module('market-front', []).controller('appController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8189/market/api/v1';
+angular.module('market-front').controller('storeController', function ($scope, $http, $location) {
+    const contextPath = 'http://localhost:8080/market/api';
 
     let currentPageIndex = 1;
 
@@ -20,7 +20,7 @@ angular.module('market-front', []).controller('appController', function ($scope,
 
 
     $scope.showInfo = function (product) {
-        alert(product.title);
+        alert(product.name);
     }
 
     $scope.createNewProduct = function () {
@@ -34,6 +34,27 @@ angular.module('market-front', []).controller('appController', function ($scope,
             );
     }
 
+    $scope.prepareForUpdate = function(id){
+        $http({
+            url: contextPath + '/products/'+id,
+            method: 'GET'
+        }).then(function (response) {
+            $scope.upd_product = response.data;
+        });
+    }
+    $scope.addToCart = function(id){
+        $http.put(contextPath + '/cart/inc?productId='+id)
+                .then(function successCallback(response) {
+                       alert("Product added  to cart");
+                    }, function failCallback(response) {
+                        alert(response.data.message);
+                    }
+                );
+    }
+
+    $scope.navToEditProductPage = function (productId){
+        $location.path('/edit_product/'+ productId);
+    }
     $scope.generatePagesIndexes = function (startPage, endPage) {
         let arr = [];
         for (let i = startPage; i < endPage + 1; i++) {
@@ -58,17 +79,7 @@ angular.module('market-front', []).controller('appController', function ($scope,
         $scope.loadProducts(currentPageIndex);
     }
 
-    $scope.deleteProduct = function(id){
-        $http({
-            url: contextPath + '/products/'+id,
-            method: 'DELETE'
-        }).then(function successCallback (response) {
-            console.log(response);
-            $scope.loadProducts(currentPageIndex);
-        }, function failCallback (response) {
-            alert(response.data.message);
-        });
-    }
+
 
     $scope.loadProducts(1);
 

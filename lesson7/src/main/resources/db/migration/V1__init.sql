@@ -27,3 +27,6 @@ INSERT INTO order_spec(order_id,product_id,quantity,price) values (3,2,6,12);
 INSERT INTO order_spec(order_id,product_id,quantity,price) values (3,3,7,45);
 INSERT INTO order_spec(order_id,product_id,quantity,price) values (4,4,8,30);
 INSERT INTO order_spec(order_id,product_id,quantity,price) values (4,1,9,32);
+
+drop table cart if exists;
+create table if not exists cart(id bigserial, product_id bigint, quantity integer, price integer, total integer, primary key(id), foreign key (product_id) references products(id) );
