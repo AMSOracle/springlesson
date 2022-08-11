@@ -1,0 +1,15 @@
+<div >
+    <p></p>
+    <h3>Обновить продукт</h3>
+    <form novalidate ng-submit="updateProduct()">
+        <div class="mb-3">
+            <label  class="form-label">Название</label>
+            <input type="text" class="form-control" placeholder="Название" ng-model="upd_product.name">
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Цена</label>
+            <input type="text" class="form-control" placeholder="Цена" ng-model="upd_product.price">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
