@@ -1,5 +1,6 @@
 package com.mabdullaev.market.controllers;
 
+import com.mabdullaev.market.aspect.Benchmark;
 import com.mabdullaev.market.model.dao.Cart;
 import com.mabdullaev.market.model.dao.CartItem;
 import com.mabdullaev.market.model.dto.ProductDto;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/cart")
 @RequiredArgsConstructor
+@Benchmark
 public class CartController {
 
     private final CartService cartService;
